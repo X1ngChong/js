@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="../js/jquery-3.4.1.js"></script>
+    <title>Title</title>
+<script>
+
+    var test = function (){
+        //ajax需要的最少的参数type,url,data(没参数不写),dataType,success
+        $.ajax({
+            type:"POST",//请求类型,POST\GET不写默认get,一般都会指明
+            url:"http://localhost:8080/jsDemo_war_exploded/ajax/test1",//请求的服务端的地址
+            // data:"name=李四&age=12",//请求参数,没有请求参数,或者请求参数构建在url,data可以不写
+            // data:{"name":"张三","age":16},可以是json
+            // data:$("#f0").serialize(),//可以是form表单的序列化
+            data:$("#f0").serialize(),//可以是form表单的序列化
+            //如果是全栈开发,可以省略
+            // ,如果在大型项目,页面客户端也指明接收响应数据的格式
+            // dataType:"text",//选填属性,不设置,根据服务端响应的数据类型自动判断
+           dataType:"json",//指明ajax接收响应的数据是什么格式,xml,json,text
+            //平常的时候async不填,因为我们就是要ajax异步,
+            //有一些特殊情况,就要要求ajax必须同步,那么就设置async:false
+            async:false,//设置请求是同步还是异步,true异步,false同步,不设置默认true
+            success:function (data){
+                alert(data["name"]+"  "+data["age"]);
+                $("#d0").text(data["name"]+"  "+data["age"]);
+            },//回调函数,在服务端成功响应了数据之后,调用这个函数,函数有一个参数,用来接收服务端返回的数据
+            error:function (jqXHR,textStatus,errorThrown){
+                var errorStr = "服务器响应的文本信息"+jqXHR.responseText
+                +"\r\n返回的状态码"+jqXHR.status
+                    +"\r\n当前状态"+jqXHR.readyState
+                    +"\r\n http状态码对应的错误信息"+jqXHR.statusText
+                    +"\r\n返回的状态"+textStatus
+                    +"\r\n服务端的异常"+errorThrown;
+
+                alert(errorStr);
+            }//当出现错误的时候,调用
+        });
+        $("#d1").text("hello");
+    }
+
+
+
+</script>
+
+</head>
+<body>
+<input type="button" value="测试" onclick="test()">
+<form id="f0" action="" >
+    <input type="text" name="name">
+    <input type="text" name="age">
+</form>
+<div id="d0"></div>
+<div id="d1"></div>
+</body>
+</html>

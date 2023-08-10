@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../js/jquery-3.4.1.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        var checkTime = function (){
+            $("#b_0").attr("disabled",true);
+            send_code();
+            var time =10;
+            //定时任务
+       var tmp=  setInterval(function (){
+                if(time==0){
+                    $("#b_0").attr("value","重新获取验证码");
+                    time =10;
+                    clearInterval(tmp);
+                    $("#b_0").attr("disabled",false);
+                }else{
+                    $("#b_0").attr("value",time);
+                    time--;
+                }
+
+            },1000);
+        }
+
+        var send_code = function (){
+            var tel =  $("#tel").val();
+            $.ajax(
+                {
+                    type:"POST",
+                    url:"http://localhost:8080/jsDemo_war_exploded/ajax/sendCode",
+                    data:"tel="+tel,
+                    dataType:"text",
+                    success:function (data){
+                        alert(data);
+                    }
+
+                }
+            );
+        }
+
+        var login = function (){
+            var tel =  $("#tel").val();
+            var code =  $("#code").val();
+            $.ajax(
+                {
+                    type:"POST",
+                    url:"http://localhost:8080/jsDemo_war_exploded/ajax/login",
+                    data:"tel="+tel+"&code="+code,
+                    dataType:"text",
+                    success:function (data){
+                        var msg="";
+                        if(data == "0"){
+                            msg="登录失败";
+                        }else{
+                            msg="登录成功";
+                        }
+
+                        alert(msg);
+                    }
+
+                }
+            );
+        }
+
+    </script>
+</head>
+<body>
+<form action="" method="">
+        手机号:<input type="text" name="tel" id="tel">
+    <input type="button" value="获取验证码" id="b_0" onclick="checkTime()"><br>
+    验证码: <input type="text" name="code" id="code"><br>
+    <input type="button" value="登录" onclick="login()">
+</form>
+</body>
+</html>

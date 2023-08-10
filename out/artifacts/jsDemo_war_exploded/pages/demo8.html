@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="../js/jquery-3.4.1.js"></script>
+    <title>Title</title>
+    <script>
+        var checkAll = function (){
+            var flag =  $("#d_0>input[type='checkbox']").prop("checked");
+            //就是让下面的五个复选框的checked属性与第一个保持一致
+            //只要把底下的复选框的值设置成和第一个复选框一致即可
+            $("input[type='checkbox']:gt(0)").prop("checked",flag);
+        }
+
+        var reverseCheck = function (){
+            //遍历复选框
+            $("#d_1>input").each(function (){
+                //判断每一个复选框是否是选中的,选中改没选中,没选中改选中
+                if($(this).prop("checked")){
+                    $(this).prop("checked",false);
+                }else{
+                    $(this).prop("checked",true);
+                }
+            })
+        }
+
+        //参数falg,Boolean值,确定是要改变的选中还是补选中
+        var changeCheck = function (flag){
+            var temp;
+            $("#d_1>input").each(function () {
+            temp = $(this).prop("checked");
+            //这个判断就可以根据flag来知道到底遍历的元素中哪些是需要改变的
+            if (temp == flag){
+                $(this).prop("checked",!temp);
+            }
+            })
+
+        }
+
+    </script>
+</head>
+<body>
+<div id="d_0">
+        学科选择:<input type="checkbox" onclick="checkAll()">全选/全部不选
+</div>
+<div id="d_1">
+    <input type="checkbox" value="0">java
+    <input type="checkbox" value="1">前端
+    <input type="checkbox" value="2">大数据
+    <input type="checkbox" value="3">UI
+    <input type="checkbox" value="4">IOS
+</div>
+<hr>
+<div id="d_2">
+  <input type="button" value="反选" onclick="reverseCheck()">
+    <input type="button" value="将选中的设置成没有选中" onclick="changeCheck(true)">
+    <input type="button" value="将没有选中的设置成选中" onclick="changeCheck(false)">
+</div>
+</body>
+</html>

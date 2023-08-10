@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="../js/jquery-3.4.1.js"></script>
+    <title>Title</title>
+    <script>
+        var userList = function (){
+            $.ajax({
+                type:"POST",
+                url:"http://localhost:8080/jsDemo_war_exploded/ajax/userList",
+                dataType:"json",
+                success:function (data){
+                   $.each(data,function (){
+                       //这地方是当前遍历次数的json对象,这个就不用套$()
+                       //this
+
+                       var temoTr = $("<tr></tr>");
+                       var nameTd = $("<td></td>");
+                       var ageTd = $("<td></td>");
+                       //在某个标签使用事件,事件绑定函数,在调用函数的时候使用this作为参数传给js方法
+                       //this代表当前所在标签的元素
+                       // 例如onclick='removeTr(this),this代表a标签元素对象
+                       var cTd =  $("<td><a href='javascript:void(0);' onclick='removeTr(this)'>删除</a></td>");
+
+                       $(nameTd).text(this["name"]);
+                       $(ageTd).text(this["age"]);
+
+                       $(temoTr).append(nameTd);
+                       $(temoTr).append(ageTd);
+                       $(temoTr).append(cTd);
+
+
+                       $("#t_01").append(temoTr);
+                   })
+                }
+            });
+        }
+
+        //当前删除的那个按钮所在td里面的a标签
+        var removeTr = function(a){
+            //$(td).parent()当前a标签td所在的那一行tr
+            $(a).parent().parent().remove();
+        }
+    </script>
+</head>
+<body>
+<input type="button" value="测试" onclick="userList()">
+
+<table id="t_01" border="1">
+<tr>
+    <th>姓名</th>
+    <th>年龄</th>
+    <th>操作</th>
+</tr>
+</table>
+</body>
+</html>
